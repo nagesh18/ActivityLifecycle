@@ -1,8 +1,11 @@
 package com.example.nagesh.activitylifecycle;
 
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -18,20 +21,41 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         inti();
         Log.d("ActivityLifeCycle","Create");
-        Log.e("ActivityLifeCycle","Create");
-        Log.w("ActivityLifeCycle","Create");
-        Log.v("ActivityLifeCycle","Create");
-        Log.i("ActivityLifeCycle","Create");
+
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(MainActivity.this,SecondActivity.class);
-                startActivity(intent);
+                alert();
             }
         });
 
 
+    }
+
+
+    public void alert(){
+        AlertDialog.Builder builder;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            builder = new AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert);
+        } else {
+            builder = new AlertDialog.Builder(this);
+        }
+        builder.setTitle("Delete entry")
+                .setMessage("Are you sure you want to delete this entry?")
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent=new Intent(MainActivity.this,SecondActivity.class);
+                        startActivity(intent);
+                    }
+                })
+                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // do nothing
+                    }
+                })
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
     }
 
     @Override
